@@ -1,0 +1,17 @@
+{
+  "name": "tale-plugin-markdown",
+  "version": "0.0.0",
+  "description": "Render markdown for a tale chapter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tale"
+  ],
+  "author": "Ryan Ramage",
+  "license": "ISC",
+  "dependencies": {
+    "marked": "^0.3.2"
+  }
+}

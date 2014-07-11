@@ -9,8 +9,19 @@
   "keywords": [
     "tale"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryanramage/tale-plugin-markdown"
+  },
+  "keywords": [
+    "tale"
+  ],
   "author": "Ryan Ramage",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryanramage/tale-plugin-markdown/issues"
+  },
+  "homepage": "https://github.com/ryanramage/tale-plugin-markdown",
   "dependencies": {
     "marked": "^0.3.2"
   }

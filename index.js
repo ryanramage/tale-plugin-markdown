@@ -2,33 +2,37 @@ var marked = require('marked');
 
 module.exports = function(options) {
   if (!options) options = {}
-  return render.bind(null, options);
+  return init.bind(null, options);
 }
 
 
 
-function render(options, ractive, read, chapter, key, done) {
+function init(options, ractive, read) {
 
   if (!options) options = {};
-  if (!options.ractive_key) options.ractive_key = 'content';
+  if (!options.ractive_key) options.ractive_key = 'content.markdown';
 
-  read.as_string(chapter, 'README.md', key, function(err, md){
+  ractive.on('chapter', function(chapter, key){
 
-    var image_post_process = [];
-    var renderer = new marked.Renderer();
-    renderer.image = function (href, title, text) {
-      var img = read.find(chapter, href)
-      if (img) {
-        image_post_process.push(img);
-        if (!key) return '<img id="'+ img.id +'" src="file/'+ img.id +'" title="' + title + '" alt="' + text + '" />';
-        else      return '<img id="'+ img.id +'" src="" title="' + title + '" alt="' + text + '" />';
+    if (!chapter.markdown) return ractive.set(options.ractive_key, null);
+
+    read.as_string(chapter, 'README.md', key, function(err, md){
+
+      var image_post_process = [];
+      var renderer = new marked.Renderer();
+      renderer.image = function (href, title, text) {
+        var img = read.find(chapter, href)
+        if (img) {
+          image_post_process.push(img);
+          if (!key) return '<img id="'+ img.id +'" src="file/'+ img.id +'" title="' + title + '" alt="' + text + '" />';
+          else      return '<img id="'+ img.id +'" src="" title="' + title + '" alt="' + text + '" />';
+        }
+        else return '<img src="'+ href +'" title="' + title + '" />';
       }
-      else return '<img src="'+ href +'" title="' + title + '" />';
-    }
-    ractive.set(options.ractive_key, marked(md, { renderer: renderer }));
-    markdown_image_replace(read, chapter, image_post_process, key);
-    done()
+      ractive.set(options.ractive_key, marked(md, { renderer: renderer }));
+      markdown_image_replace(read, chapter, image_post_process, key);
 
+    })
   })
 
 }
